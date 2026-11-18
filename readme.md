@@ -1,7 +1,3 @@
-# Postgres — your database connection
-DATABASE_URL="postgresql://neondb_owner:npg_2fHilLu0TezU@ep-noisy-wind-a17l17tl.ap-southeast-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
-DATABASE_URL_POOLED="postgresql://neondb_owner:npg_2fHilLu0TezU@ep-noisy-wind-a17l17tl-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
-
 # npm i -g neon@latest && neon login
 
 # neon init -y --org-id org-little-recipe-78922934 --project-id sparkling-violet-90843600 --branch production --services postgres

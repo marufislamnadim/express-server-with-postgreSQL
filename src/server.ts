@@ -1,7 +1,10 @@
 import express, { type Application, type Request, type Response } from 'express';
 import {Pool} from 'pg';
+import config from './config';
+
 
 const app: Application = express();
+// const port = config.port;
 const port = 3000;
 const pool = new Pool ({
     connectionString:"postgresql://neondb_owner:npg_2fHilLu0TezU@ep-noisy-wind-a17l17tl.ap-southeast-1.aws.neon.tech/neondb?sslmode=false&channel_binding=require"
@@ -111,7 +114,7 @@ app.get('/api/v1/users/:id', async (req: Request, res: Response) => {
             message:"User not found",
          })
         }
-        
+
         res.status(200).json({
         success:true,
         message:"Single User retrived successfully",
