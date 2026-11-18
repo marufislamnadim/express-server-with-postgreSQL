@@ -4,10 +4,10 @@ import config from './config';
 
 
 const app: Application = express();
-// const port = config.port;
-const port = 3000;
+const port = config.port;
+// const port = 3000;
 const pool = new Pool ({
-    connectionString:"postgresql://neondb_owner:npg_2fHilLu0TezU@ep-noisy-wind-a17l17tl.ap-southeast-1.aws.neon.tech/neondb?sslmode=false&channel_binding=require"
+    connectionString:config.connection_String
 })
 // console.log(pool)
 const initDB = async ()=>{
