@@ -103,6 +103,15 @@ app.get('/api/v1/users/:id', async (req: Request, res: Response) => {
             SELECT * FROM users WHERE id=$1
             `, [id]); 
         // console.log(result)
+
+                
+        if(result.rowCount ===0){
+            res.status(404).json({
+            success:true,
+            message:"User not found",
+         })
+        }
+        
         res.status(200).json({
         success:true,
         message:"Single User retrived successfully",
@@ -116,6 +125,73 @@ app.get('/api/v1/users/:id', async (req: Request, res: Response) => {
         });
     }
 });
+// PUT method - updating user 
+app.put('/api/v1/users/:id', async (req:Request, res: Response)=>{
+    try {
+        const {id}= req.params;
+        const {name, is_active} = req.body;
+        const result = await pool.query(`
+            UPDATE users
+            SET 
+            name = COALESCE($1, name),
+            is_active = COALESCE($2, is_active),
+            updated_at = NOW()
+            WHERE id = $3 RETURNING *
+            `,[name ?? null, is_active  ?? null, id]);
+        
+                
+        if(result.rowCount ===0){
+            res.status(404).json({
+            success:true,
+            message:"User not found",
+         })
+        }
+
+        res.status(202).json({
+            success:true,
+            message:"User updated successfully",
+            data: result.rows[0],
+        })
+
+    } catch (error:any) {
+        res.status(503).json({
+        success:false,
+        message:error?.message,
+        error: error,
+        });
+    }
+})
+
+// DELETE a single user 
+app.delete('/api/v1/users/:id', async (req:Request, res: Response)=>{
+    try {
+        const {id}= req.params;
+        const result = await pool.query(`
+            DELETE from users
+            WHERE id = $1 
+            `,[id]);
+        console.log(result)
+        
+        if(result.rowCount ===0){
+            res.status(404).json({
+            success:true,
+            message:"User not found",
+         })
+        }
+
+        res.status(202).json({
+            success:true,
+            message:"User DELETED successfully",
+        })
+
+    } catch (error:any) {
+        res.status(503).json({
+        success:false,
+        message:error?.message,
+        error: error,
+        });
+    }
+})
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
